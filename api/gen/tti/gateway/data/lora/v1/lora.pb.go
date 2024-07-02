@@ -293,6 +293,7 @@ type TransmitChannel struct {
 
 	// Frequency in Hz.
 	Frequency uint64                            `protobuf:"varint,1,opt,name=frequency,proto3" json:"frequency,omitempty"`
+	Bandwidth Bandwidth                         `protobuf:"varint,2,opt,name=bandwidth,proto3,enum=tti.gateway.data.lora.v1.Bandwidth" json:"bandwidth,omitempty"`
 	Lbt       *TransmitChannel_ListenBeforeTalk `protobuf:"bytes,3,opt,name=lbt,proto3" json:"lbt,omitempty"`
 }
 
@@ -333,6 +334,13 @@ func (x *TransmitChannel) GetFrequency() uint64 {
 		return x.Frequency
 	}
 	return 0
+}
+
+func (x *TransmitChannel) GetBandwidth() Bandwidth {
+	if x != nil {
+		return x.Bandwidth
+	}
+	return Bandwidth_BANDWIDTH_UNSPECIFIED
 }
 
 func (x *TransmitChannel) GetLbt() *TransmitChannel_ListenBeforeTalk {
@@ -535,6 +543,120 @@ func (*UplinkMessage_Lora_) isUplinkMessage_DataRate() {}
 
 func (*UplinkMessage_Fsk) isUplinkMessage_DataRate() {}
 
+type DownlinkMessage struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// TX power in dBm.
+	TxPower   uint32 `protobuf:"varint,1,opt,name=tx_power,json=txPower,proto3" json:"tx_power,omitempty"`
+	TxChannel uint32 `protobuf:"varint,2,opt,name=tx_channel,json=txChannel,proto3" json:"tx_channel,omitempty"`
+	Timestamp uint32 `protobuf:"varint,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	// Types that are assignable to DataRate:
+	//
+	//	*DownlinkMessage_Lora_
+	//	*DownlinkMessage_Fsk
+	DataRate isDownlinkMessage_DataRate `protobuf_oneof:"data_rate"`
+	Payload  []byte                     `protobuf:"bytes,6,opt,name=payload,proto3" json:"payload,omitempty"`
+}
+
+func (x *DownlinkMessage) Reset() {
+	*x = DownlinkMessage{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DownlinkMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DownlinkMessage) ProtoMessage() {}
+
+func (x *DownlinkMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DownlinkMessage.ProtoReflect.Descriptor instead.
+func (*DownlinkMessage) Descriptor() ([]byte, []int) {
+	return file_tti_gateway_data_lora_v1_lora_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *DownlinkMessage) GetTxPower() uint32 {
+	if x != nil {
+		return x.TxPower
+	}
+	return 0
+}
+
+func (x *DownlinkMessage) GetTxChannel() uint32 {
+	if x != nil {
+		return x.TxChannel
+	}
+	return 0
+}
+
+func (x *DownlinkMessage) GetTimestamp() uint32 {
+	if x != nil {
+		return x.Timestamp
+	}
+	return 0
+}
+
+func (m *DownlinkMessage) GetDataRate() isDownlinkMessage_DataRate {
+	if m != nil {
+		return m.DataRate
+	}
+	return nil
+}
+
+func (x *DownlinkMessage) GetLora() *DownlinkMessage_Lora {
+	if x, ok := x.GetDataRate().(*DownlinkMessage_Lora_); ok {
+		return x.Lora
+	}
+	return nil
+}
+
+func (x *DownlinkMessage) GetFsk() *DownlinkMessage_FSK {
+	if x, ok := x.GetDataRate().(*DownlinkMessage_Fsk); ok {
+		return x.Fsk
+	}
+	return nil
+}
+
+func (x *DownlinkMessage) GetPayload() []byte {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+type isDownlinkMessage_DataRate interface {
+	isDownlinkMessage_DataRate()
+}
+
+type DownlinkMessage_Lora_ struct {
+	Lora *DownlinkMessage_Lora `protobuf:"bytes,4,opt,name=lora,proto3,oneof"`
+}
+
+type DownlinkMessage_Fsk struct {
+	Fsk *DownlinkMessage_FSK `protobuf:"bytes,5,opt,name=fsk,proto3,oneof"`
+}
+
+func (*DownlinkMessage_Lora_) isDownlinkMessage_DataRate() {}
+
+func (*DownlinkMessage_Fsk) isDownlinkMessage_DataRate() {}
+
 type Board_RFChain struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -547,7 +669,7 @@ type Board_RFChain struct {
 func (x *Board_RFChain) Reset() {
 	*x = Board_RFChain{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[5]
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -560,7 +682,7 @@ func (x *Board_RFChain) String() string {
 func (*Board_RFChain) ProtoMessage() {}
 
 func (x *Board_RFChain) ProtoReflect() protoreflect.Message {
-	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[5]
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -613,7 +735,7 @@ type Board_IntermediateFrequencies struct {
 func (x *Board_IntermediateFrequencies) Reset() {
 	*x = Board_IntermediateFrequencies{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[6]
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -626,7 +748,7 @@ func (x *Board_IntermediateFrequencies) String() string {
 func (*Board_IntermediateFrequencies) ProtoMessage() {}
 
 func (x *Board_IntermediateFrequencies) ProtoReflect() protoreflect.Message {
-	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[6]
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -725,7 +847,7 @@ type Board_IntermediateFrequencies_MultipleSF struct {
 func (x *Board_IntermediateFrequencies_MultipleSF) Reset() {
 	*x = Board_IntermediateFrequencies_MultipleSF{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[7]
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -738,7 +860,7 @@ func (x *Board_IntermediateFrequencies_MultipleSF) String() string {
 func (*Board_IntermediateFrequencies_MultipleSF) ProtoMessage() {}
 
 func (x *Board_IntermediateFrequencies_MultipleSF) ProtoReflect() protoreflect.Message {
-	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[7]
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -783,7 +905,7 @@ type Board_IntermediateFrequencies_FSK struct {
 func (x *Board_IntermediateFrequencies_FSK) Reset() {
 	*x = Board_IntermediateFrequencies_FSK{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[8]
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -796,7 +918,7 @@ func (x *Board_IntermediateFrequencies_FSK) String() string {
 func (*Board_IntermediateFrequencies_FSK) ProtoMessage() {}
 
 func (x *Board_IntermediateFrequencies_FSK) ProtoReflect() protoreflect.Message {
-	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[8]
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -855,7 +977,7 @@ type Board_IntermediateFrequencies_LoraServiceChannel struct {
 func (x *Board_IntermediateFrequencies_LoraServiceChannel) Reset() {
 	*x = Board_IntermediateFrequencies_LoraServiceChannel{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[9]
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -868,7 +990,7 @@ func (x *Board_IntermediateFrequencies_LoraServiceChannel) String() string {
 func (*Board_IntermediateFrequencies_LoraServiceChannel) ProtoMessage() {}
 
 func (x *Board_IntermediateFrequencies_LoraServiceChannel) ProtoReflect() protoreflect.Message {
-	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[9]
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -917,7 +1039,6 @@ type TransmitChannel_ListenBeforeTalk struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Bandwidth    Bandwidth                                 `protobuf:"varint,1,opt,name=bandwidth,proto3,enum=tti.gateway.data.lora.v1.Bandwidth" json:"bandwidth,omitempty"`
 	ScanTime     TransmitChannel_ListenBeforeTalk_ScanTime `protobuf:"varint,2,opt,name=scan_time,json=scanTime,proto3,enum=tti.gateway.data.lora.v1.TransmitChannel_ListenBeforeTalk_ScanTime" json:"scan_time,omitempty"`
 	TransmitTime *durationpb.Duration                      `protobuf:"bytes,3,opt,name=transmit_time,json=transmitTime,proto3" json:"transmit_time,omitempty"`
 }
@@ -925,7 +1046,7 @@ type TransmitChannel_ListenBeforeTalk struct {
 func (x *TransmitChannel_ListenBeforeTalk) Reset() {
 	*x = TransmitChannel_ListenBeforeTalk{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[10]
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -938,7 +1059,7 @@ func (x *TransmitChannel_ListenBeforeTalk) String() string {
 func (*TransmitChannel_ListenBeforeTalk) ProtoMessage() {}
 
 func (x *TransmitChannel_ListenBeforeTalk) ProtoReflect() protoreflect.Message {
-	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[10]
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -952,13 +1073,6 @@ func (x *TransmitChannel_ListenBeforeTalk) ProtoReflect() protoreflect.Message {
 // Deprecated: Use TransmitChannel_ListenBeforeTalk.ProtoReflect.Descriptor instead.
 func (*TransmitChannel_ListenBeforeTalk) Descriptor() ([]byte, []int) {
 	return file_tti_gateway_data_lora_v1_lora_proto_rawDescGZIP(), []int{2, 0}
-}
-
-func (x *TransmitChannel_ListenBeforeTalk) GetBandwidth() Bandwidth {
-	if x != nil {
-		return x.Bandwidth
-	}
-	return Bandwidth_BANDWIDTH_UNSPECIFIED
 }
 
 func (x *TransmitChannel_ListenBeforeTalk) GetScanTime() TransmitChannel_ListenBeforeTalk_ScanTime {
@@ -987,7 +1101,7 @@ type GatewayConfig_SpectralScan struct {
 func (x *GatewayConfig_SpectralScan) Reset() {
 	*x = GatewayConfig_SpectralScan{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[11]
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1000,7 +1114,7 @@ func (x *GatewayConfig_SpectralScan) String() string {
 func (*GatewayConfig_SpectralScan) ProtoMessage() {}
 
 func (x *GatewayConfig_SpectralScan) ProtoReflect() protoreflect.Message {
-	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[11]
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1051,7 +1165,7 @@ type UplinkMessage_Lora struct {
 func (x *UplinkMessage_Lora) Reset() {
 	*x = UplinkMessage_Lora{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[12]
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1064,7 +1178,7 @@ func (x *UplinkMessage_Lora) String() string {
 func (*UplinkMessage_Lora) ProtoMessage() {}
 
 func (x *UplinkMessage_Lora) ProtoReflect() protoreflect.Message {
-	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[12]
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1154,7 +1268,7 @@ type UplinkMessage_FSK struct {
 func (x *UplinkMessage_FSK) Reset() {
 	*x = UplinkMessage_FSK{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[13]
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1167,7 +1281,7 @@ func (x *UplinkMessage_FSK) String() string {
 func (*UplinkMessage_FSK) ProtoMessage() {}
 
 func (x *UplinkMessage_FSK) ProtoReflect() protoreflect.Message {
-	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[13]
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1181,6 +1295,127 @@ func (x *UplinkMessage_FSK) ProtoReflect() protoreflect.Message {
 // Deprecated: Use UplinkMessage_FSK.ProtoReflect.Descriptor instead.
 func (*UplinkMessage_FSK) Descriptor() ([]byte, []int) {
 	return file_tti_gateway_data_lora_v1_lora_proto_rawDescGZIP(), []int{4, 1}
+}
+
+type DownlinkMessage_Lora struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	SpreadingFactor uint32   `protobuf:"varint,1,opt,name=spreading_factor,json=spreadingFactor,proto3" json:"spreading_factor,omitempty"`
+	CodeRate        CodeRate `protobuf:"varint,2,opt,name=code_rate,json=codeRate,proto3,enum=tti.gateway.data.lora.v1.CodeRate" json:"code_rate,omitempty"`
+	// Enable settings to transmit the message as LoRaWAN uplink message.
+	// This disables inverted polarization and enables CRC.
+	LorawanUplink bool `protobuf:"varint,3,opt,name=lorawan_uplink,json=lorawanUplink,proto3" json:"lorawan_uplink,omitempty"`
+}
+
+func (x *DownlinkMessage_Lora) Reset() {
+	*x = DownlinkMessage_Lora{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DownlinkMessage_Lora) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DownlinkMessage_Lora) ProtoMessage() {}
+
+func (x *DownlinkMessage_Lora) ProtoReflect() protoreflect.Message {
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DownlinkMessage_Lora.ProtoReflect.Descriptor instead.
+func (*DownlinkMessage_Lora) Descriptor() ([]byte, []int) {
+	return file_tti_gateway_data_lora_v1_lora_proto_rawDescGZIP(), []int{5, 0}
+}
+
+func (x *DownlinkMessage_Lora) GetSpreadingFactor() uint32 {
+	if x != nil {
+		return x.SpreadingFactor
+	}
+	return 0
+}
+
+func (x *DownlinkMessage_Lora) GetCodeRate() CodeRate {
+	if x != nil {
+		return x.CodeRate
+	}
+	return CodeRate_CODE_RATE_4_5
+}
+
+func (x *DownlinkMessage_Lora) GetLorawanUplink() bool {
+	if x != nil {
+		return x.LorawanUplink
+	}
+	return false
+}
+
+type DownlinkMessage_FSK struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Bitrate uint32 `protobuf:"varint,1,opt,name=bitrate,proto3" json:"bitrate,omitempty"`
+	// Frequency deviation in KHz.
+	FrequencyDeviation uint32 `protobuf:"varint,2,opt,name=frequency_deviation,json=frequencyDeviation,proto3" json:"frequency_deviation,omitempty"`
+}
+
+func (x *DownlinkMessage_FSK) Reset() {
+	*x = DownlinkMessage_FSK{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DownlinkMessage_FSK) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DownlinkMessage_FSK) ProtoMessage() {}
+
+func (x *DownlinkMessage_FSK) ProtoReflect() protoreflect.Message {
+	mi := &file_tti_gateway_data_lora_v1_lora_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DownlinkMessage_FSK.ProtoReflect.Descriptor instead.
+func (*DownlinkMessage_FSK) Descriptor() ([]byte, []int) {
+	return file_tti_gateway_data_lora_v1_lora_proto_rawDescGZIP(), []int{5, 1}
+}
+
+func (x *DownlinkMessage_FSK) GetBitrate() uint32 {
+	if x != nil {
+		return x.Bitrate
+	}
+	return 0
+}
+
+func (x *DownlinkMessage_FSK) GetFrequencyDeviation() uint32 {
+	if x != nil {
+		return x.FrequencyDeviation
+	}
+	return 0
 }
 
 var File_tti_gateway_data_lora_v1_lora_proto protoreflect.FileDescriptor
@@ -1307,17 +1542,17 @@ var file_tti_gateway_data_lora_v1_lora_proto_rawDesc = []byte{
 	0x65, 0x74, 0x22, 0xcb, 0x03, 0x0a, 0x0f, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x6d, 0x69, 0x74, 0x43,
 	0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x12, 0x1c, 0x0a, 0x09, 0x66, 0x72, 0x65, 0x71, 0x75, 0x65,
 	0x6e, 0x63, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x66, 0x72, 0x65, 0x71, 0x75,
-	0x65, 0x6e, 0x63, 0x79, 0x12, 0x4c, 0x0a, 0x03, 0x6c, 0x62, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x3a, 0x2e, 0x74, 0x74, 0x69, 0x2e, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e,
-	0x64, 0x61, 0x74, 0x61, 0x2e, 0x6c, 0x6f, 0x72, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x72, 0x61,
-	0x6e, 0x73, 0x6d, 0x69, 0x74, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x2e, 0x4c, 0x69, 0x73,
-	0x74, 0x65, 0x6e, 0x42, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x54, 0x61, 0x6c, 0x6b, 0x52, 0x03, 0x6c,
-	0x62, 0x74, 0x1a, 0xcb, 0x02, 0x0a, 0x10, 0x4c, 0x69, 0x73, 0x74, 0x65, 0x6e, 0x42, 0x65, 0x66,
-	0x6f, 0x72, 0x65, 0x54, 0x61, 0x6c, 0x6b, 0x12, 0x41, 0x0a, 0x09, 0x62, 0x61, 0x6e, 0x64, 0x77,
-	0x69, 0x64, 0x74, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x23, 0x2e, 0x74, 0x74, 0x69,
-	0x2e, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e, 0x64, 0x61, 0x74, 0x61, 0x2e, 0x6c, 0x6f,
-	0x72, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x61, 0x6e, 0x64, 0x77, 0x69, 0x64, 0x74, 0x68, 0x52,
-	0x09, 0x62, 0x61, 0x6e, 0x64, 0x77, 0x69, 0x64, 0x74, 0x68, 0x12, 0x60, 0x0a, 0x09, 0x73, 0x63,
+	0x65, 0x6e, 0x63, 0x79, 0x12, 0x41, 0x0a, 0x09, 0x62, 0x61, 0x6e, 0x64, 0x77, 0x69, 0x64, 0x74,
+	0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x23, 0x2e, 0x74, 0x74, 0x69, 0x2e, 0x67, 0x61,
+	0x74, 0x65, 0x77, 0x61, 0x79, 0x2e, 0x64, 0x61, 0x74, 0x61, 0x2e, 0x6c, 0x6f, 0x72, 0x61, 0x2e,
+	0x76, 0x31, 0x2e, 0x42, 0x61, 0x6e, 0x64, 0x77, 0x69, 0x64, 0x74, 0x68, 0x52, 0x09, 0x62, 0x61,
+	0x6e, 0x64, 0x77, 0x69, 0x64, 0x74, 0x68, 0x12, 0x4c, 0x0a, 0x03, 0x6c, 0x62, 0x74, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x3a, 0x2e, 0x74, 0x74, 0x69, 0x2e, 0x67, 0x61, 0x74, 0x65, 0x77,
+	0x61, 0x79, 0x2e, 0x64, 0x61, 0x74, 0x61, 0x2e, 0x6c, 0x6f, 0x72, 0x61, 0x2e, 0x76, 0x31, 0x2e,
+	0x54, 0x72, 0x61, 0x6e, 0x73, 0x6d, 0x69, 0x74, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x2e,
+	0x4c, 0x69, 0x73, 0x74, 0x65, 0x6e, 0x42, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x54, 0x61, 0x6c, 0x6b,
+	0x52, 0x03, 0x6c, 0x62, 0x74, 0x1a, 0x88, 0x02, 0x0a, 0x10, 0x4c, 0x69, 0x73, 0x74, 0x65, 0x6e,
+	0x42, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x54, 0x61, 0x6c, 0x6b, 0x12, 0x60, 0x0a, 0x09, 0x73, 0x63,
 	0x61, 0x6e, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x43, 0x2e,
 	0x74, 0x74, 0x69, 0x2e, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e, 0x64, 0x61, 0x74, 0x61,
 	0x2e, 0x6c, 0x6f, 0x72, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x6d, 0x69,
@@ -1395,35 +1630,67 @@ var file_tti_gateway_data_lora_v1_lora_proto_rawDesc = []byte{
 	0x2e, 0x6c, 0x6f, 0x72, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x61, 0x74,
 	0x65, 0x52, 0x08, 0x63, 0x6f, 0x64, 0x65, 0x52, 0x61, 0x74, 0x65, 0x42, 0x05, 0x0a, 0x03, 0x73,
 	0x6e, 0x72, 0x1a, 0x05, 0x0a, 0x03, 0x46, 0x53, 0x4b, 0x42, 0x0b, 0x0a, 0x09, 0x64, 0x61, 0x74,
-	0x61, 0x5f, 0x72, 0x61, 0x74, 0x65, 0x2a, 0x6b, 0x0a, 0x09, 0x42, 0x61, 0x6e, 0x64, 0x77, 0x69,
-	0x64, 0x74, 0x68, 0x12, 0x19, 0x0a, 0x15, 0x42, 0x41, 0x4e, 0x44, 0x57, 0x49, 0x44, 0x54, 0x48,
-	0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x15,
-	0x0a, 0x11, 0x42, 0x41, 0x4e, 0x44, 0x57, 0x49, 0x44, 0x54, 0x48, 0x5f, 0x31, 0x32, 0x35, 0x5f,
-	0x4b, 0x48, 0x5a, 0x10, 0x01, 0x12, 0x15, 0x0a, 0x11, 0x42, 0x41, 0x4e, 0x44, 0x57, 0x49, 0x44,
-	0x54, 0x48, 0x5f, 0x32, 0x35, 0x30, 0x5f, 0x4b, 0x48, 0x5a, 0x10, 0x02, 0x12, 0x15, 0x0a, 0x11,
-	0x42, 0x41, 0x4e, 0x44, 0x57, 0x49, 0x44, 0x54, 0x48, 0x5f, 0x35, 0x30, 0x30, 0x5f, 0x4b, 0x48,
-	0x5a, 0x10, 0x03, 0x2a, 0x56, 0x0a, 0x08, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x61, 0x74, 0x65, 0x12,
-	0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x44, 0x45, 0x5f, 0x52, 0x41, 0x54, 0x45, 0x5f, 0x34, 0x5f, 0x35,
-	0x10, 0x00, 0x12, 0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x44, 0x45, 0x5f, 0x52, 0x41, 0x54, 0x45, 0x5f,
-	0x34, 0x5f, 0x36, 0x10, 0x01, 0x12, 0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x44, 0x45, 0x5f, 0x52, 0x41,
-	0x54, 0x45, 0x5f, 0x34, 0x5f, 0x37, 0x10, 0x02, 0x12, 0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x44, 0x45,
-	0x5f, 0x52, 0x41, 0x54, 0x45, 0x5f, 0x34, 0x5f, 0x38, 0x10, 0x03, 0x42, 0xef, 0x01, 0x0a, 0x1c,
-	0x63, 0x6f, 0x6d, 0x2e, 0x74, 0x74, 0x69, 0x2e, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e,
-	0x64, 0x61, 0x74, 0x61, 0x2e, 0x6c, 0x6f, 0x72, 0x61, 0x2e, 0x76, 0x31, 0x42, 0x09, 0x4c, 0x6f,
-	0x72, 0x61, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x3f, 0x67, 0x6f, 0x2e, 0x74, 0x68,
-	0x65, 0x74, 0x68, 0x69, 0x6e, 0x67, 0x73, 0x2e, 0x69, 0x6e, 0x64, 0x75, 0x73, 0x74, 0x72, 0x69,
-	0x65, 0x73, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x74, 0x74, 0x69, 0x2f, 0x67,
-	0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2f, 0x64, 0x61, 0x74, 0x61, 0x2f, 0x6c, 0x6f, 0x72, 0x61,
-	0x2f, 0x76, 0x31, 0x3b, 0x6c, 0x6f, 0x72, 0x61, 0x76, 0x31, 0xa2, 0x02, 0x04, 0x54, 0x47, 0x44,
-	0x4c, 0xaa, 0x02, 0x18, 0x54, 0x74, 0x69, 0x2e, 0x47, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e,
-	0x44, 0x61, 0x74, 0x61, 0x2e, 0x4c, 0x6f, 0x72, 0x61, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x18, 0x54,
-	0x74, 0x69, 0x5c, 0x47, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x5c, 0x44, 0x61, 0x74, 0x61, 0x5c,
-	0x4c, 0x6f, 0x72, 0x61, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x24, 0x54, 0x74, 0x69, 0x5c, 0x47, 0x61,
-	0x74, 0x65, 0x77, 0x61, 0x79, 0x5c, 0x44, 0x61, 0x74, 0x61, 0x5c, 0x4c, 0x6f, 0x72, 0x61, 0x5c,
-	0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02,
-	0x1c, 0x54, 0x74, 0x69, 0x3a, 0x3a, 0x47, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x3a, 0x3a, 0x44,
-	0x61, 0x74, 0x61, 0x3a, 0x3a, 0x4c, 0x6f, 0x72, 0x61, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x61, 0x5f, 0x72, 0x61, 0x74, 0x65, 0x22, 0x87, 0x04, 0x0a, 0x0f, 0x44, 0x6f, 0x77, 0x6e, 0x6c,
+	0x69, 0x6e, 0x6b, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x74, 0x78,
+	0x5f, 0x70, 0x6f, 0x77, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x07, 0x74, 0x78,
+	0x50, 0x6f, 0x77, 0x65, 0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x74, 0x78, 0x5f, 0x63, 0x68, 0x61, 0x6e,
+	0x6e, 0x65, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x09, 0x74, 0x78, 0x43, 0x68, 0x61,
+	0x6e, 0x6e, 0x65, 0x6c, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d,
+	0x70, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61,
+	0x6d, 0x70, 0x12, 0x44, 0x0a, 0x04, 0x6c, 0x6f, 0x72, 0x61, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x2e, 0x2e, 0x74, 0x74, 0x69, 0x2e, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e, 0x64,
+	0x61, 0x74, 0x61, 0x2e, 0x6c, 0x6f, 0x72, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x44, 0x6f, 0x77, 0x6e,
+	0x6c, 0x69, 0x6e, 0x6b, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x4c, 0x6f, 0x72, 0x61,
+	0x48, 0x00, 0x52, 0x04, 0x6c, 0x6f, 0x72, 0x61, 0x12, 0x41, 0x0a, 0x03, 0x66, 0x73, 0x6b, 0x18,
+	0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2d, 0x2e, 0x74, 0x74, 0x69, 0x2e, 0x67, 0x61, 0x74, 0x65,
+	0x77, 0x61, 0x79, 0x2e, 0x64, 0x61, 0x74, 0x61, 0x2e, 0x6c, 0x6f, 0x72, 0x61, 0x2e, 0x76, 0x31,
+	0x2e, 0x44, 0x6f, 0x77, 0x6e, 0x6c, 0x69, 0x6e, 0x6b, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+	0x2e, 0x46, 0x53, 0x4b, 0x48, 0x00, 0x52, 0x03, 0x66, 0x73, 0x6b, 0x12, 0x18, 0x0a, 0x07, 0x70,
+	0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x70, 0x61,
+	0x79, 0x6c, 0x6f, 0x61, 0x64, 0x1a, 0x99, 0x01, 0x0a, 0x04, 0x4c, 0x6f, 0x72, 0x61, 0x12, 0x29,
+	0x0a, 0x10, 0x73, 0x70, 0x72, 0x65, 0x61, 0x64, 0x69, 0x6e, 0x67, 0x5f, 0x66, 0x61, 0x63, 0x74,
+	0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x0f, 0x73, 0x70, 0x72, 0x65, 0x61, 0x64,
+	0x69, 0x6e, 0x67, 0x46, 0x61, 0x63, 0x74, 0x6f, 0x72, 0x12, 0x3f, 0x0a, 0x09, 0x63, 0x6f, 0x64,
+	0x65, 0x5f, 0x72, 0x61, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x22, 0x2e, 0x74,
+	0x74, 0x69, 0x2e, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e, 0x64, 0x61, 0x74, 0x61, 0x2e,
+	0x6c, 0x6f, 0x72, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x61, 0x74, 0x65,
+	0x52, 0x08, 0x63, 0x6f, 0x64, 0x65, 0x52, 0x61, 0x74, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x6c, 0x6f,
+	0x72, 0x61, 0x77, 0x61, 0x6e, 0x5f, 0x75, 0x70, 0x6c, 0x69, 0x6e, 0x6b, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x08, 0x52, 0x0d, 0x6c, 0x6f, 0x72, 0x61, 0x77, 0x61, 0x6e, 0x55, 0x70, 0x6c, 0x69, 0x6e,
+	0x6b, 0x1a, 0x50, 0x0a, 0x03, 0x46, 0x53, 0x4b, 0x12, 0x18, 0x0a, 0x07, 0x62, 0x69, 0x74, 0x72,
+	0x61, 0x74, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x07, 0x62, 0x69, 0x74, 0x72, 0x61,
+	0x74, 0x65, 0x12, 0x2f, 0x0a, 0x13, 0x66, 0x72, 0x65, 0x71, 0x75, 0x65, 0x6e, 0x63, 0x79, 0x5f,
+	0x64, 0x65, 0x76, 0x69, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52,
+	0x12, 0x66, 0x72, 0x65, 0x71, 0x75, 0x65, 0x6e, 0x63, 0x79, 0x44, 0x65, 0x76, 0x69, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x42, 0x0b, 0x0a, 0x09, 0x64, 0x61, 0x74, 0x61, 0x5f, 0x72, 0x61, 0x74, 0x65,
+	0x2a, 0x6b, 0x0a, 0x09, 0x42, 0x61, 0x6e, 0x64, 0x77, 0x69, 0x64, 0x74, 0x68, 0x12, 0x19, 0x0a,
+	0x15, 0x42, 0x41, 0x4e, 0x44, 0x57, 0x49, 0x44, 0x54, 0x48, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45,
+	0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x15, 0x0a, 0x11, 0x42, 0x41, 0x4e, 0x44,
+	0x57, 0x49, 0x44, 0x54, 0x48, 0x5f, 0x31, 0x32, 0x35, 0x5f, 0x4b, 0x48, 0x5a, 0x10, 0x01, 0x12,
+	0x15, 0x0a, 0x11, 0x42, 0x41, 0x4e, 0x44, 0x57, 0x49, 0x44, 0x54, 0x48, 0x5f, 0x32, 0x35, 0x30,
+	0x5f, 0x4b, 0x48, 0x5a, 0x10, 0x02, 0x12, 0x15, 0x0a, 0x11, 0x42, 0x41, 0x4e, 0x44, 0x57, 0x49,
+	0x44, 0x54, 0x48, 0x5f, 0x35, 0x30, 0x30, 0x5f, 0x4b, 0x48, 0x5a, 0x10, 0x03, 0x2a, 0x56, 0x0a,
+	0x08, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x61, 0x74, 0x65, 0x12, 0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x44,
+	0x45, 0x5f, 0x52, 0x41, 0x54, 0x45, 0x5f, 0x34, 0x5f, 0x35, 0x10, 0x00, 0x12, 0x11, 0x0a, 0x0d,
+	0x43, 0x4f, 0x44, 0x45, 0x5f, 0x52, 0x41, 0x54, 0x45, 0x5f, 0x34, 0x5f, 0x36, 0x10, 0x01, 0x12,
+	0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x44, 0x45, 0x5f, 0x52, 0x41, 0x54, 0x45, 0x5f, 0x34, 0x5f, 0x37,
+	0x10, 0x02, 0x12, 0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x44, 0x45, 0x5f, 0x52, 0x41, 0x54, 0x45, 0x5f,
+	0x34, 0x5f, 0x38, 0x10, 0x03, 0x42, 0xef, 0x01, 0x0a, 0x1c, 0x63, 0x6f, 0x6d, 0x2e, 0x74, 0x74,
+	0x69, 0x2e, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e, 0x64, 0x61, 0x74, 0x61, 0x2e, 0x6c,
+	0x6f, 0x72, 0x61, 0x2e, 0x76, 0x31, 0x42, 0x09, 0x4c, 0x6f, 0x72, 0x61, 0x50, 0x72, 0x6f, 0x74,
+	0x6f, 0x50, 0x01, 0x5a, 0x3f, 0x67, 0x6f, 0x2e, 0x74, 0x68, 0x65, 0x74, 0x68, 0x69, 0x6e, 0x67,
+	0x73, 0x2e, 0x69, 0x6e, 0x64, 0x75, 0x73, 0x74, 0x72, 0x69, 0x65, 0x73, 0x2f, 0x70, 0x6b, 0x67,
+	0x2f, 0x61, 0x70, 0x69, 0x2f, 0x74, 0x74, 0x69, 0x2f, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79,
+	0x2f, 0x64, 0x61, 0x74, 0x61, 0x2f, 0x6c, 0x6f, 0x72, 0x61, 0x2f, 0x76, 0x31, 0x3b, 0x6c, 0x6f,
+	0x72, 0x61, 0x76, 0x31, 0xa2, 0x02, 0x04, 0x54, 0x47, 0x44, 0x4c, 0xaa, 0x02, 0x18, 0x54, 0x74,
+	0x69, 0x2e, 0x47, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x2e, 0x4c,
+	0x6f, 0x72, 0x61, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x18, 0x54, 0x74, 0x69, 0x5c, 0x47, 0x61, 0x74,
+	0x65, 0x77, 0x61, 0x79, 0x5c, 0x44, 0x61, 0x74, 0x61, 0x5c, 0x4c, 0x6f, 0x72, 0x61, 0x5c, 0x56,
+	0x31, 0xe2, 0x02, 0x24, 0x54, 0x74, 0x69, 0x5c, 0x47, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x5c,
+	0x44, 0x61, 0x74, 0x61, 0x5c, 0x4c, 0x6f, 0x72, 0x61, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42,
+	0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x1c, 0x54, 0x74, 0x69, 0x3a, 0x3a,
+	0x47, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x3a, 0x3a, 0x44, 0x61, 0x74, 0x61, 0x3a, 0x3a, 0x4c,
+	0x6f, 0x72, 0x61, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1439,7 +1706,7 @@ func file_tti_gateway_data_lora_v1_lora_proto_rawDescGZIP() []byte {
 }
 
 var file_tti_gateway_data_lora_v1_lora_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_tti_gateway_data_lora_v1_lora_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_tti_gateway_data_lora_v1_lora_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_tti_gateway_data_lora_v1_lora_proto_goTypes = []interface{}{
 	(Bandwidth)(0), // 0: tti.gateway.data.lora.v1.Bandwidth
 	(CodeRate)(0),  // 1: tti.gateway.data.lora.v1.CodeRate
@@ -1449,50 +1716,56 @@ var file_tti_gateway_data_lora_v1_lora_proto_goTypes = []interface{}{
 	(*TransmitChannel)(nil),                                  // 5: tti.gateway.data.lora.v1.TransmitChannel
 	(*GatewayConfig)(nil),                                    // 6: tti.gateway.data.lora.v1.GatewayConfig
 	(*UplinkMessage)(nil),                                    // 7: tti.gateway.data.lora.v1.UplinkMessage
-	(*Board_RFChain)(nil),                                    // 8: tti.gateway.data.lora.v1.Board.RFChain
-	(*Board_IntermediateFrequencies)(nil),                    // 9: tti.gateway.data.lora.v1.Board.IntermediateFrequencies
-	(*Board_IntermediateFrequencies_MultipleSF)(nil),         // 10: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
-	(*Board_IntermediateFrequencies_FSK)(nil),                // 11: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.FSK
-	(*Board_IntermediateFrequencies_LoraServiceChannel)(nil), // 12: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.LoraServiceChannel
-	(*TransmitChannel_ListenBeforeTalk)(nil),                 // 13: tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk
-	(*GatewayConfig_SpectralScan)(nil),                       // 14: tti.gateway.data.lora.v1.GatewayConfig.SpectralScan
-	(*UplinkMessage_Lora)(nil),                               // 15: tti.gateway.data.lora.v1.UplinkMessage.Lora
-	(*UplinkMessage_FSK)(nil),                                // 16: tti.gateway.data.lora.v1.UplinkMessage.FSK
-	(*durationpb.Duration)(nil),                              // 17: google.protobuf.Duration
+	(*DownlinkMessage)(nil),                                  // 8: tti.gateway.data.lora.v1.DownlinkMessage
+	(*Board_RFChain)(nil),                                    // 9: tti.gateway.data.lora.v1.Board.RFChain
+	(*Board_IntermediateFrequencies)(nil),                    // 10: tti.gateway.data.lora.v1.Board.IntermediateFrequencies
+	(*Board_IntermediateFrequencies_MultipleSF)(nil),         // 11: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
+	(*Board_IntermediateFrequencies_FSK)(nil),                // 12: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.FSK
+	(*Board_IntermediateFrequencies_LoraServiceChannel)(nil), // 13: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.LoraServiceChannel
+	(*TransmitChannel_ListenBeforeTalk)(nil),                 // 14: tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk
+	(*GatewayConfig_SpectralScan)(nil),                       // 15: tti.gateway.data.lora.v1.GatewayConfig.SpectralScan
+	(*UplinkMessage_Lora)(nil),                               // 16: tti.gateway.data.lora.v1.UplinkMessage.Lora
+	(*UplinkMessage_FSK)(nil),                                // 17: tti.gateway.data.lora.v1.UplinkMessage.FSK
+	(*DownlinkMessage_Lora)(nil),                             // 18: tti.gateway.data.lora.v1.DownlinkMessage.Lora
+	(*DownlinkMessage_FSK)(nil),                              // 19: tti.gateway.data.lora.v1.DownlinkMessage.FSK
+	(*durationpb.Duration)(nil),                              // 20: google.protobuf.Duration
 }
 var file_tti_gateway_data_lora_v1_lora_proto_depIdxs = []int32{
-	8,  // 0: tti.gateway.data.lora.v1.Board.rf_chain0:type_name -> tti.gateway.data.lora.v1.Board.RFChain
-	8,  // 1: tti.gateway.data.lora.v1.Board.rf_chain1:type_name -> tti.gateway.data.lora.v1.Board.RFChain
-	9,  // 2: tti.gateway.data.lora.v1.Board.ifs:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies
-	13, // 3: tti.gateway.data.lora.v1.TransmitChannel.lbt:type_name -> tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk
-	14, // 4: tti.gateway.data.lora.v1.GatewayConfig.spectral_scan:type_name -> tti.gateway.data.lora.v1.GatewayConfig.SpectralScan
-	3,  // 5: tti.gateway.data.lora.v1.GatewayConfig.boards:type_name -> tti.gateway.data.lora.v1.Board
-	4,  // 6: tti.gateway.data.lora.v1.GatewayConfig.lbt:type_name -> tti.gateway.data.lora.v1.ListenBeforeTalk
-	5,  // 7: tti.gateway.data.lora.v1.GatewayConfig.tx:type_name -> tti.gateway.data.lora.v1.TransmitChannel
-	15, // 8: tti.gateway.data.lora.v1.UplinkMessage.lora:type_name -> tti.gateway.data.lora.v1.UplinkMessage.Lora
-	16, // 9: tti.gateway.data.lora.v1.UplinkMessage.fsk:type_name -> tti.gateway.data.lora.v1.UplinkMessage.FSK
-	10, // 10: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf0:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
-	10, // 11: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf1:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
-	10, // 12: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf2:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
-	10, // 13: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf3:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
-	10, // 14: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf4:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
-	10, // 15: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf5:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
-	10, // 16: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf6:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
-	10, // 17: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf7:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
-	11, // 18: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.fsk:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.FSK
-	12, // 19: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.lora_service_channel:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.LoraServiceChannel
-	0,  // 20: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.FSK.bandwidth:type_name -> tti.gateway.data.lora.v1.Bandwidth
-	0,  // 21: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.LoraServiceChannel.bandwidth:type_name -> tti.gateway.data.lora.v1.Bandwidth
-	0,  // 22: tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk.bandwidth:type_name -> tti.gateway.data.lora.v1.Bandwidth
-	2,  // 23: tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk.scan_time:type_name -> tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk.ScanTime
-	17, // 24: tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk.transmit_time:type_name -> google.protobuf.Duration
-	17, // 25: tti.gateway.data.lora.v1.GatewayConfig.SpectralScan.pace:type_name -> google.protobuf.Duration
-	1,  // 26: tti.gateway.data.lora.v1.UplinkMessage.Lora.code_rate:type_name -> tti.gateway.data.lora.v1.CodeRate
-	27, // [27:27] is the sub-list for method output_type
-	27, // [27:27] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	9,  // 0: tti.gateway.data.lora.v1.Board.rf_chain0:type_name -> tti.gateway.data.lora.v1.Board.RFChain
+	9,  // 1: tti.gateway.data.lora.v1.Board.rf_chain1:type_name -> tti.gateway.data.lora.v1.Board.RFChain
+	10, // 2: tti.gateway.data.lora.v1.Board.ifs:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies
+	0,  // 3: tti.gateway.data.lora.v1.TransmitChannel.bandwidth:type_name -> tti.gateway.data.lora.v1.Bandwidth
+	14, // 4: tti.gateway.data.lora.v1.TransmitChannel.lbt:type_name -> tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk
+	15, // 5: tti.gateway.data.lora.v1.GatewayConfig.spectral_scan:type_name -> tti.gateway.data.lora.v1.GatewayConfig.SpectralScan
+	3,  // 6: tti.gateway.data.lora.v1.GatewayConfig.boards:type_name -> tti.gateway.data.lora.v1.Board
+	4,  // 7: tti.gateway.data.lora.v1.GatewayConfig.lbt:type_name -> tti.gateway.data.lora.v1.ListenBeforeTalk
+	5,  // 8: tti.gateway.data.lora.v1.GatewayConfig.tx:type_name -> tti.gateway.data.lora.v1.TransmitChannel
+	16, // 9: tti.gateway.data.lora.v1.UplinkMessage.lora:type_name -> tti.gateway.data.lora.v1.UplinkMessage.Lora
+	17, // 10: tti.gateway.data.lora.v1.UplinkMessage.fsk:type_name -> tti.gateway.data.lora.v1.UplinkMessage.FSK
+	18, // 11: tti.gateway.data.lora.v1.DownlinkMessage.lora:type_name -> tti.gateway.data.lora.v1.DownlinkMessage.Lora
+	19, // 12: tti.gateway.data.lora.v1.DownlinkMessage.fsk:type_name -> tti.gateway.data.lora.v1.DownlinkMessage.FSK
+	11, // 13: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf0:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
+	11, // 14: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf1:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
+	11, // 15: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf2:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
+	11, // 16: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf3:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
+	11, // 17: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf4:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
+	11, // 18: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf5:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
+	11, // 19: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf6:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
+	11, // 20: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.multiple_sf7:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.MultipleSF
+	12, // 21: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.fsk:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.FSK
+	13, // 22: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.lora_service_channel:type_name -> tti.gateway.data.lora.v1.Board.IntermediateFrequencies.LoraServiceChannel
+	0,  // 23: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.FSK.bandwidth:type_name -> tti.gateway.data.lora.v1.Bandwidth
+	0,  // 24: tti.gateway.data.lora.v1.Board.IntermediateFrequencies.LoraServiceChannel.bandwidth:type_name -> tti.gateway.data.lora.v1.Bandwidth
+	2,  // 25: tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk.scan_time:type_name -> tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk.ScanTime
+	20, // 26: tti.gateway.data.lora.v1.TransmitChannel.ListenBeforeTalk.transmit_time:type_name -> google.protobuf.Duration
+	20, // 27: tti.gateway.data.lora.v1.GatewayConfig.SpectralScan.pace:type_name -> google.protobuf.Duration
+	1,  // 28: tti.gateway.data.lora.v1.UplinkMessage.Lora.code_rate:type_name -> tti.gateway.data.lora.v1.CodeRate
+	1,  // 29: tti.gateway.data.lora.v1.DownlinkMessage.Lora.code_rate:type_name -> tti.gateway.data.lora.v1.CodeRate
+	30, // [30:30] is the sub-list for method output_type
+	30, // [30:30] is the sub-list for method input_type
+	30, // [30:30] is the sub-list for extension type_name
+	30, // [30:30] is the sub-list for extension extendee
+	0,  // [0:30] is the sub-list for field type_name
 }
 
 func init() { file_tti_gateway_data_lora_v1_lora_proto_init() }
@@ -1562,7 +1835,7 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 			}
 		}
 		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Board_RFChain); i {
+			switch v := v.(*DownlinkMessage); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1574,7 +1847,7 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 			}
 		}
 		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Board_IntermediateFrequencies); i {
+			switch v := v.(*Board_RFChain); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1586,7 +1859,7 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 			}
 		}
 		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Board_IntermediateFrequencies_MultipleSF); i {
+			switch v := v.(*Board_IntermediateFrequencies); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1598,7 +1871,7 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 			}
 		}
 		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Board_IntermediateFrequencies_FSK); i {
+			switch v := v.(*Board_IntermediateFrequencies_MultipleSF); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1610,7 +1883,7 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 			}
 		}
 		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Board_IntermediateFrequencies_LoraServiceChannel); i {
+			switch v := v.(*Board_IntermediateFrequencies_FSK); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1622,7 +1895,7 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 			}
 		}
 		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TransmitChannel_ListenBeforeTalk); i {
+			switch v := v.(*Board_IntermediateFrequencies_LoraServiceChannel); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1634,7 +1907,7 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 			}
 		}
 		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GatewayConfig_SpectralScan); i {
+			switch v := v.(*TransmitChannel_ListenBeforeTalk); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1646,7 +1919,7 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 			}
 		}
 		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UplinkMessage_Lora); i {
+			switch v := v.(*GatewayConfig_SpectralScan); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1658,7 +1931,43 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 			}
 		}
 		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UplinkMessage_Lora); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UplinkMessage_FSK); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DownlinkMessage_Lora); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tti_gateway_data_lora_v1_lora_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DownlinkMessage_FSK); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1674,7 +1983,11 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 		(*UplinkMessage_Lora_)(nil),
 		(*UplinkMessage_Fsk)(nil),
 	}
-	file_tti_gateway_data_lora_v1_lora_proto_msgTypes[12].OneofWrappers = []interface{}{
+	file_tti_gateway_data_lora_v1_lora_proto_msgTypes[5].OneofWrappers = []interface{}{
+		(*DownlinkMessage_Lora_)(nil),
+		(*DownlinkMessage_Fsk)(nil),
+	}
+	file_tti_gateway_data_lora_v1_lora_proto_msgTypes[13].OneofWrappers = []interface{}{
 		(*UplinkMessage_Lora_SnrPositive)(nil),
 		(*UplinkMessage_Lora_SnrNegative)(nil),
 	}
@@ -1684,7 +1997,7 @@ func file_tti_gateway_data_lora_v1_lora_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_tti_gateway_data_lora_v1_lora_proto_rawDesc,
 			NumEnums:      3,
-			NumMessages:   14,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
