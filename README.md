@@ -5,4 +5,3 @@ This repository contains reusable Go packages that can be integrated in external
 ## Legal
 
 Copyright © 2024 The Things Industries B.V.
-
