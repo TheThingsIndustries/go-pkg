@@ -3,7 +3,16 @@
 // Package ca provides The Things Industries Root CA.
 package ca
 
-// RootCA is PEM encoded The Things Industries Root CA.
-//
-// go:embed tti.pem
-var RootCA []byte
+import _ "embed"
+
+var (
+	// RootCA is PEM encoded The Things Industries Root CA.
+	//
+	// go:embed tti.pem
+	RootCA []byte
+
+	// GatewaysCAs is the PEM encoded gateway identity signer intermediate CAs.
+	//
+	//go:embed gateways.pem
+	GatewaysCAs []byte
+)
