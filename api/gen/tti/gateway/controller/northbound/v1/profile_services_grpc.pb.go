@@ -21,11 +21,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	WifiProfileService_Create_FullMethodName = "/tti.gateway.controller.northbound.v1.WifiProfileService/Create"
-	WifiProfileService_List_FullMethodName   = "/tti.gateway.controller.northbound.v1.WifiProfileService/List"
-	WifiProfileService_Get_FullMethodName    = "/tti.gateway.controller.northbound.v1.WifiProfileService/Get"
-	WifiProfileService_Update_FullMethodName = "/tti.gateway.controller.northbound.v1.WifiProfileService/Update"
-	WifiProfileService_Delete_FullMethodName = "/tti.gateway.controller.northbound.v1.WifiProfileService/Delete"
+	WifiProfileService_Create_FullMethodName    = "/tti.gateway.controller.northbound.v1.WifiProfileService/Create"
+	WifiProfileService_List_FullMethodName      = "/tti.gateway.controller.northbound.v1.WifiProfileService/List"
+	WifiProfileService_Get_FullMethodName       = "/tti.gateway.controller.northbound.v1.WifiProfileService/Get"
+	WifiProfileService_GetByName_FullMethodName = "/tti.gateway.controller.northbound.v1.WifiProfileService/GetByName"
+	WifiProfileService_Update_FullMethodName    = "/tti.gateway.controller.northbound.v1.WifiProfileService/Update"
+	WifiProfileService_Delete_FullMethodName    = "/tti.gateway.controller.northbound.v1.WifiProfileService/Delete"
 )
 
 // WifiProfileServiceClient is the client API for WifiProfileService service.
@@ -35,6 +36,7 @@ type WifiProfileServiceClient interface {
 	Create(ctx context.Context, in *WifiProfileServiceCreateRequest, opts ...grpc.CallOption) (*WifiProfileServiceCreateResponse, error)
 	List(ctx context.Context, in *WifiProfileServiceListRequest, opts ...grpc.CallOption) (*WifiProfileServiceListResponse, error)
 	Get(ctx context.Context, in *WifiProfileServiceGetRequest, opts ...grpc.CallOption) (*WifiProfileServiceGetResponse, error)
+	GetByName(ctx context.Context, in *WifiProfileServiceGetByNameRequest, opts ...grpc.CallOption) (*WifiProfileServiceGetByNameResponse, error)
 	Update(ctx context.Context, in *WifiProfileServiceUpdateRequest, opts ...grpc.CallOption) (*WifiProfileServiceUpdateResponse, error)
 	Delete(ctx context.Context, in *WifiProfileServiceDeleteRequest, opts ...grpc.CallOption) (*WifiProfileServiceDeleteResponse, error)
 }
@@ -74,6 +76,15 @@ func (c *wifiProfileServiceClient) Get(ctx context.Context, in *WifiProfileServi
 	return out, nil
 }
 
+func (c *wifiProfileServiceClient) GetByName(ctx context.Context, in *WifiProfileServiceGetByNameRequest, opts ...grpc.CallOption) (*WifiProfileServiceGetByNameResponse, error) {
+	out := new(WifiProfileServiceGetByNameResponse)
+	err := c.cc.Invoke(ctx, WifiProfileService_GetByName_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *wifiProfileServiceClient) Update(ctx context.Context, in *WifiProfileServiceUpdateRequest, opts ...grpc.CallOption) (*WifiProfileServiceUpdateResponse, error) {
 	out := new(WifiProfileServiceUpdateResponse)
 	err := c.cc.Invoke(ctx, WifiProfileService_Update_FullMethodName, in, out, opts...)
@@ -99,6 +110,7 @@ type WifiProfileServiceServer interface {
 	Create(context.Context, *WifiProfileServiceCreateRequest) (*WifiProfileServiceCreateResponse, error)
 	List(context.Context, *WifiProfileServiceListRequest) (*WifiProfileServiceListResponse, error)
 	Get(context.Context, *WifiProfileServiceGetRequest) (*WifiProfileServiceGetResponse, error)
+	GetByName(context.Context, *WifiProfileServiceGetByNameRequest) (*WifiProfileServiceGetByNameResponse, error)
 	Update(context.Context, *WifiProfileServiceUpdateRequest) (*WifiProfileServiceUpdateResponse, error)
 	Delete(context.Context, *WifiProfileServiceDeleteRequest) (*WifiProfileServiceDeleteResponse, error)
 	mustEmbedUnimplementedWifiProfileServiceServer()
@@ -116,6 +128,9 @@ func (UnimplementedWifiProfileServiceServer) List(context.Context, *WifiProfileS
 }
 func (UnimplementedWifiProfileServiceServer) Get(context.Context, *WifiProfileServiceGetRequest) (*WifiProfileServiceGetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedWifiProfileServiceServer) GetByName(context.Context, *WifiProfileServiceGetByNameRequest) (*WifiProfileServiceGetByNameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
 }
 func (UnimplementedWifiProfileServiceServer) Update(context.Context, *WifiProfileServiceUpdateRequest) (*WifiProfileServiceUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -190,6 +205,24 @@ func _WifiProfileService_Get_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WifiProfileService_GetByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WifiProfileServiceGetByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WifiProfileServiceServer).GetByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WifiProfileService_GetByName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WifiProfileServiceServer).GetByName(ctx, req.(*WifiProfileServiceGetByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _WifiProfileService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WifiProfileServiceUpdateRequest)
 	if err := dec(in); err != nil {
@@ -246,6 +279,10 @@ var WifiProfileService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _WifiProfileService_Get_Handler,
 		},
 		{
+			MethodName: "GetByName",
+			Handler:    _WifiProfileService_GetByName_Handler,
+		},
+		{
 			MethodName: "Update",
 			Handler:    _WifiProfileService_Update_Handler,
 		},
@@ -259,11 +296,12 @@ var WifiProfileService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	EthernetProfileService_Create_FullMethodName = "/tti.gateway.controller.northbound.v1.EthernetProfileService/Create"
-	EthernetProfileService_List_FullMethodName   = "/tti.gateway.controller.northbound.v1.EthernetProfileService/List"
-	EthernetProfileService_Get_FullMethodName    = "/tti.gateway.controller.northbound.v1.EthernetProfileService/Get"
-	EthernetProfileService_Update_FullMethodName = "/tti.gateway.controller.northbound.v1.EthernetProfileService/Update"
-	EthernetProfileService_Delete_FullMethodName = "/tti.gateway.controller.northbound.v1.EthernetProfileService/Delete"
+	EthernetProfileService_Create_FullMethodName    = "/tti.gateway.controller.northbound.v1.EthernetProfileService/Create"
+	EthernetProfileService_List_FullMethodName      = "/tti.gateway.controller.northbound.v1.EthernetProfileService/List"
+	EthernetProfileService_Get_FullMethodName       = "/tti.gateway.controller.northbound.v1.EthernetProfileService/Get"
+	EthernetProfileService_GetByName_FullMethodName = "/tti.gateway.controller.northbound.v1.EthernetProfileService/GetByName"
+	EthernetProfileService_Update_FullMethodName    = "/tti.gateway.controller.northbound.v1.EthernetProfileService/Update"
+	EthernetProfileService_Delete_FullMethodName    = "/tti.gateway.controller.northbound.v1.EthernetProfileService/Delete"
 )
 
 // EthernetProfileServiceClient is the client API for EthernetProfileService service.
@@ -273,6 +311,7 @@ type EthernetProfileServiceClient interface {
 	Create(ctx context.Context, in *EthernetProfileServiceCreateRequest, opts ...grpc.CallOption) (*EthernetProfileServiceCreateResponse, error)
 	List(ctx context.Context, in *EthernetProfileServiceListRequest, opts ...grpc.CallOption) (*EthernetProfileServiceListResponse, error)
 	Get(ctx context.Context, in *EthernetProfileServiceGetRequest, opts ...grpc.CallOption) (*EthernetProfileServiceGetResponse, error)
+	GetByName(ctx context.Context, in *EthernetProfileServiceGetByNameRequest, opts ...grpc.CallOption) (*EthernetProfileServiceGetByNameResponse, error)
 	Update(ctx context.Context, in *EthernetProfileServiceUpdateRequest, opts ...grpc.CallOption) (*EthernetProfileServiceUpdateResponse, error)
 	Delete(ctx context.Context, in *EthernetProfileServiceDeleteRequest, opts ...grpc.CallOption) (*EthernetProfileServiceDeleteResponse, error)
 }
@@ -312,6 +351,15 @@ func (c *ethernetProfileServiceClient) Get(ctx context.Context, in *EthernetProf
 	return out, nil
 }
 
+func (c *ethernetProfileServiceClient) GetByName(ctx context.Context, in *EthernetProfileServiceGetByNameRequest, opts ...grpc.CallOption) (*EthernetProfileServiceGetByNameResponse, error) {
+	out := new(EthernetProfileServiceGetByNameResponse)
+	err := c.cc.Invoke(ctx, EthernetProfileService_GetByName_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *ethernetProfileServiceClient) Update(ctx context.Context, in *EthernetProfileServiceUpdateRequest, opts ...grpc.CallOption) (*EthernetProfileServiceUpdateResponse, error) {
 	out := new(EthernetProfileServiceUpdateResponse)
 	err := c.cc.Invoke(ctx, EthernetProfileService_Update_FullMethodName, in, out, opts...)
@@ -337,6 +385,7 @@ type EthernetProfileServiceServer interface {
 	Create(context.Context, *EthernetProfileServiceCreateRequest) (*EthernetProfileServiceCreateResponse, error)
 	List(context.Context, *EthernetProfileServiceListRequest) (*EthernetProfileServiceListResponse, error)
 	Get(context.Context, *EthernetProfileServiceGetRequest) (*EthernetProfileServiceGetResponse, error)
+	GetByName(context.Context, *EthernetProfileServiceGetByNameRequest) (*EthernetProfileServiceGetByNameResponse, error)
 	Update(context.Context, *EthernetProfileServiceUpdateRequest) (*EthernetProfileServiceUpdateResponse, error)
 	Delete(context.Context, *EthernetProfileServiceDeleteRequest) (*EthernetProfileServiceDeleteResponse, error)
 	mustEmbedUnimplementedEthernetProfileServiceServer()
@@ -354,6 +403,9 @@ func (UnimplementedEthernetProfileServiceServer) List(context.Context, *Ethernet
 }
 func (UnimplementedEthernetProfileServiceServer) Get(context.Context, *EthernetProfileServiceGetRequest) (*EthernetProfileServiceGetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedEthernetProfileServiceServer) GetByName(context.Context, *EthernetProfileServiceGetByNameRequest) (*EthernetProfileServiceGetByNameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
 }
 func (UnimplementedEthernetProfileServiceServer) Update(context.Context, *EthernetProfileServiceUpdateRequest) (*EthernetProfileServiceUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -429,6 +481,24 @@ func _EthernetProfileService_Get_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EthernetProfileService_GetByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EthernetProfileServiceGetByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EthernetProfileServiceServer).GetByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EthernetProfileService_GetByName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EthernetProfileServiceServer).GetByName(ctx, req.(*EthernetProfileServiceGetByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _EthernetProfileService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EthernetProfileServiceUpdateRequest)
 	if err := dec(in); err != nil {
@@ -485,6 +555,10 @@ var EthernetProfileService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _EthernetProfileService_Get_Handler,
 		},
 		{
+			MethodName: "GetByName",
+			Handler:    _EthernetProfileService_GetByName_Handler,
+		},
+		{
 			MethodName: "Update",
 			Handler:    _EthernetProfileService_Update_Handler,
 		},
@@ -498,11 +572,12 @@ var EthernetProfileService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	GeolocationProfileService_Create_FullMethodName = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/Create"
-	GeolocationProfileService_List_FullMethodName   = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/List"
-	GeolocationProfileService_Get_FullMethodName    = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/Get"
-	GeolocationProfileService_Update_FullMethodName = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/Update"
-	GeolocationProfileService_Delete_FullMethodName = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/Delete"
+	GeolocationProfileService_Create_FullMethodName    = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/Create"
+	GeolocationProfileService_List_FullMethodName      = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/List"
+	GeolocationProfileService_Get_FullMethodName       = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/Get"
+	GeolocationProfileService_GetByName_FullMethodName = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/GetByName"
+	GeolocationProfileService_Update_FullMethodName    = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/Update"
+	GeolocationProfileService_Delete_FullMethodName    = "/tti.gateway.controller.northbound.v1.GeolocationProfileService/Delete"
 )
 
 // GeolocationProfileServiceClient is the client API for GeolocationProfileService service.
@@ -512,6 +587,7 @@ type GeolocationProfileServiceClient interface {
 	Create(ctx context.Context, in *GeolocationProfileServiceCreateRequest, opts ...grpc.CallOption) (*GeolocationProfileServiceCreateResponse, error)
 	List(ctx context.Context, in *GeolocationProfileServiceListRequest, opts ...grpc.CallOption) (*GeolocationProfileServiceListResponse, error)
 	Get(ctx context.Context, in *GeolocationProfileServiceGetRequest, opts ...grpc.CallOption) (*GeolocationProfileServiceGetResponse, error)
+	GetByName(ctx context.Context, in *GeolocationProfileServiceGetByNameRequest, opts ...grpc.CallOption) (*GeolocationProfileServiceGetByNameResponse, error)
 	Update(ctx context.Context, in *GeolocationProfileServiceUpdateRequest, opts ...grpc.CallOption) (*GeolocationProfileServiceUpdateResponse, error)
 	Delete(ctx context.Context, in *GeolocationProfileServiceDeleteRequest, opts ...grpc.CallOption) (*GeolocationProfileServiceDeleteResponse, error)
 }
@@ -551,6 +627,15 @@ func (c *geolocationProfileServiceClient) Get(ctx context.Context, in *Geolocati
 	return out, nil
 }
 
+func (c *geolocationProfileServiceClient) GetByName(ctx context.Context, in *GeolocationProfileServiceGetByNameRequest, opts ...grpc.CallOption) (*GeolocationProfileServiceGetByNameResponse, error) {
+	out := new(GeolocationProfileServiceGetByNameResponse)
+	err := c.cc.Invoke(ctx, GeolocationProfileService_GetByName_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *geolocationProfileServiceClient) Update(ctx context.Context, in *GeolocationProfileServiceUpdateRequest, opts ...grpc.CallOption) (*GeolocationProfileServiceUpdateResponse, error) {
 	out := new(GeolocationProfileServiceUpdateResponse)
 	err := c.cc.Invoke(ctx, GeolocationProfileService_Update_FullMethodName, in, out, opts...)
@@ -576,6 +661,7 @@ type GeolocationProfileServiceServer interface {
 	Create(context.Context, *GeolocationProfileServiceCreateRequest) (*GeolocationProfileServiceCreateResponse, error)
 	List(context.Context, *GeolocationProfileServiceListRequest) (*GeolocationProfileServiceListResponse, error)
 	Get(context.Context, *GeolocationProfileServiceGetRequest) (*GeolocationProfileServiceGetResponse, error)
+	GetByName(context.Context, *GeolocationProfileServiceGetByNameRequest) (*GeolocationProfileServiceGetByNameResponse, error)
 	Update(context.Context, *GeolocationProfileServiceUpdateRequest) (*GeolocationProfileServiceUpdateResponse, error)
 	Delete(context.Context, *GeolocationProfileServiceDeleteRequest) (*GeolocationProfileServiceDeleteResponse, error)
 	mustEmbedUnimplementedGeolocationProfileServiceServer()
@@ -593,6 +679,9 @@ func (UnimplementedGeolocationProfileServiceServer) List(context.Context, *Geolo
 }
 func (UnimplementedGeolocationProfileServiceServer) Get(context.Context, *GeolocationProfileServiceGetRequest) (*GeolocationProfileServiceGetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedGeolocationProfileServiceServer) GetByName(context.Context, *GeolocationProfileServiceGetByNameRequest) (*GeolocationProfileServiceGetByNameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
 }
 func (UnimplementedGeolocationProfileServiceServer) Update(context.Context, *GeolocationProfileServiceUpdateRequest) (*GeolocationProfileServiceUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -668,6 +757,24 @@ func _GeolocationProfileService_Get_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GeolocationProfileService_GetByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GeolocationProfileServiceGetByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GeolocationProfileServiceServer).GetByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GeolocationProfileService_GetByName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GeolocationProfileServiceServer).GetByName(ctx, req.(*GeolocationProfileServiceGetByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _GeolocationProfileService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GeolocationProfileServiceUpdateRequest)
 	if err := dec(in); err != nil {
@@ -724,6 +831,10 @@ var GeolocationProfileService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _GeolocationProfileService_Get_Handler,
 		},
 		{
+			MethodName: "GetByName",
+			Handler:    _GeolocationProfileService_GetByName_Handler,
+		},
+		{
 			MethodName: "Update",
 			Handler:    _GeolocationProfileService_Update_Handler,
 		},
@@ -737,11 +848,12 @@ var GeolocationProfileService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	LoraPacketForwarderProfileService_Create_FullMethodName = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/Create"
-	LoraPacketForwarderProfileService_List_FullMethodName   = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/List"
-	LoraPacketForwarderProfileService_Get_FullMethodName    = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/Get"
-	LoraPacketForwarderProfileService_Update_FullMethodName = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/Update"
-	LoraPacketForwarderProfileService_Delete_FullMethodName = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/Delete"
+	LoraPacketForwarderProfileService_Create_FullMethodName    = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/Create"
+	LoraPacketForwarderProfileService_List_FullMethodName      = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/List"
+	LoraPacketForwarderProfileService_Get_FullMethodName       = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/Get"
+	LoraPacketForwarderProfileService_GetByName_FullMethodName = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/GetByName"
+	LoraPacketForwarderProfileService_Update_FullMethodName    = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/Update"
+	LoraPacketForwarderProfileService_Delete_FullMethodName    = "/tti.gateway.controller.northbound.v1.LoraPacketForwarderProfileService/Delete"
 )
 
 // LoraPacketForwarderProfileServiceClient is the client API for LoraPacketForwarderProfileService service.
@@ -751,6 +863,7 @@ type LoraPacketForwarderProfileServiceClient interface {
 	Create(ctx context.Context, in *LoraPacketForwarderProfileServiceCreateRequest, opts ...grpc.CallOption) (*LoraPacketForwarderProfileServiceCreateResponse, error)
 	List(ctx context.Context, in *LoraPacketForwarderProfileServiceListRequest, opts ...grpc.CallOption) (*LoraPacketForwarderProfileServiceListResponse, error)
 	Get(ctx context.Context, in *LoraPacketForwarderProfileServiceGetRequest, opts ...grpc.CallOption) (*LoraPacketForwarderProfileServiceGetResponse, error)
+	GetByName(ctx context.Context, in *LoraPacketForwarderProfileServiceGetByNameRequest, opts ...grpc.CallOption) (*LoraPacketForwarderProfileServiceGetByNameResponse, error)
 	Update(ctx context.Context, in *LoraPacketForwarderProfileServiceUpdateRequest, opts ...grpc.CallOption) (*LoraPacketForwarderProfileServiceUpdateResponse, error)
 	Delete(ctx context.Context, in *LoraPacketForwarderProfileServiceDeleteRequest, opts ...grpc.CallOption) (*LoraPacketForwarderProfileServiceDeleteResponse, error)
 }
@@ -790,6 +903,15 @@ func (c *loraPacketForwarderProfileServiceClient) Get(ctx context.Context, in *L
 	return out, nil
 }
 
+func (c *loraPacketForwarderProfileServiceClient) GetByName(ctx context.Context, in *LoraPacketForwarderProfileServiceGetByNameRequest, opts ...grpc.CallOption) (*LoraPacketForwarderProfileServiceGetByNameResponse, error) {
+	out := new(LoraPacketForwarderProfileServiceGetByNameResponse)
+	err := c.cc.Invoke(ctx, LoraPacketForwarderProfileService_GetByName_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *loraPacketForwarderProfileServiceClient) Update(ctx context.Context, in *LoraPacketForwarderProfileServiceUpdateRequest, opts ...grpc.CallOption) (*LoraPacketForwarderProfileServiceUpdateResponse, error) {
 	out := new(LoraPacketForwarderProfileServiceUpdateResponse)
 	err := c.cc.Invoke(ctx, LoraPacketForwarderProfileService_Update_FullMethodName, in, out, opts...)
@@ -815,6 +937,7 @@ type LoraPacketForwarderProfileServiceServer interface {
 	Create(context.Context, *LoraPacketForwarderProfileServiceCreateRequest) (*LoraPacketForwarderProfileServiceCreateResponse, error)
 	List(context.Context, *LoraPacketForwarderProfileServiceListRequest) (*LoraPacketForwarderProfileServiceListResponse, error)
 	Get(context.Context, *LoraPacketForwarderProfileServiceGetRequest) (*LoraPacketForwarderProfileServiceGetResponse, error)
+	GetByName(context.Context, *LoraPacketForwarderProfileServiceGetByNameRequest) (*LoraPacketForwarderProfileServiceGetByNameResponse, error)
 	Update(context.Context, *LoraPacketForwarderProfileServiceUpdateRequest) (*LoraPacketForwarderProfileServiceUpdateResponse, error)
 	Delete(context.Context, *LoraPacketForwarderProfileServiceDeleteRequest) (*LoraPacketForwarderProfileServiceDeleteResponse, error)
 	mustEmbedUnimplementedLoraPacketForwarderProfileServiceServer()
@@ -832,6 +955,9 @@ func (UnimplementedLoraPacketForwarderProfileServiceServer) List(context.Context
 }
 func (UnimplementedLoraPacketForwarderProfileServiceServer) Get(context.Context, *LoraPacketForwarderProfileServiceGetRequest) (*LoraPacketForwarderProfileServiceGetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedLoraPacketForwarderProfileServiceServer) GetByName(context.Context, *LoraPacketForwarderProfileServiceGetByNameRequest) (*LoraPacketForwarderProfileServiceGetByNameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByName not implemented")
 }
 func (UnimplementedLoraPacketForwarderProfileServiceServer) Update(context.Context, *LoraPacketForwarderProfileServiceUpdateRequest) (*LoraPacketForwarderProfileServiceUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -907,6 +1033,24 @@ func _LoraPacketForwarderProfileService_Get_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LoraPacketForwarderProfileService_GetByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoraPacketForwarderProfileServiceGetByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LoraPacketForwarderProfileServiceServer).GetByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LoraPacketForwarderProfileService_GetByName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LoraPacketForwarderProfileServiceServer).GetByName(ctx, req.(*LoraPacketForwarderProfileServiceGetByNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _LoraPacketForwarderProfileService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoraPacketForwarderProfileServiceUpdateRequest)
 	if err := dec(in); err != nil {
@@ -961,6 +1105,10 @@ var LoraPacketForwarderProfileService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _LoraPacketForwarderProfileService_Get_Handler,
+		},
+		{
+			MethodName: "GetByName",
+			Handler:    _LoraPacketForwarderProfileService_GetByName_Handler,
 		},
 		{
 			MethodName: "Update",
