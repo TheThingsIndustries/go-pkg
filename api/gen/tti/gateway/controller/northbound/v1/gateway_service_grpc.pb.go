@@ -24,6 +24,7 @@ const (
 	GatewayService_Claim_FullMethodName                = "/tti.gateway.controller.northbound.v1.GatewayService/Claim"
 	GatewayService_Unclaim_FullMethodName              = "/tti.gateway.controller.northbound.v1.GatewayService/Unclaim"
 	GatewayService_Get_FullMethodName                  = "/tti.gateway.controller.northbound.v1.GatewayService/Get"
+	GatewayService_GetLastLocation_FullMethodName      = "/tti.gateway.controller.northbound.v1.GatewayService/GetLastLocation"
 	GatewayService_Update_FullMethodName               = "/tti.gateway.controller.northbound.v1.GatewayService/Update"
 	GatewayService_Subscribe_FullMethodName            = "/tti.gateway.controller.northbound.v1.GatewayService/Subscribe"
 	GatewayService_ScanWiFiAccessPoints_FullMethodName = "/tti.gateway.controller.northbound.v1.GatewayService/ScanWiFiAccessPoints"
@@ -36,6 +37,7 @@ type GatewayServiceClient interface {
 	Claim(ctx context.Context, in *GatewayServiceClaimRequest, opts ...grpc.CallOption) (*GatewayServiceClaimResponse, error)
 	Unclaim(ctx context.Context, in *GatewayServiceUnclaimRequest, opts ...grpc.CallOption) (*GatewayServiceUnclaimResponse, error)
 	Get(ctx context.Context, in *GatewayServiceGetRequest, opts ...grpc.CallOption) (*GatewayServiceGetResponse, error)
+	GetLastLocation(ctx context.Context, in *GatewayServiceGetLastLocationRequest, opts ...grpc.CallOption) (*GatewayServiceGetLastLocationResponse, error)
 	Update(ctx context.Context, in *GatewayServiceUpdateRequest, opts ...grpc.CallOption) (*GatewayServiceUpdateResponse, error)
 	Subscribe(ctx context.Context, in *GatewayServiceSubscribeRequest, opts ...grpc.CallOption) (GatewayService_SubscribeClient, error)
 	ScanWiFiAccessPoints(ctx context.Context, in *GatewayServiceScanWiFiAccessPointsRequest, opts ...grpc.CallOption) (*GatewayServiceScanWiFiAccessPointsResponse, error)
@@ -70,6 +72,15 @@ func (c *gatewayServiceClient) Unclaim(ctx context.Context, in *GatewayServiceUn
 func (c *gatewayServiceClient) Get(ctx context.Context, in *GatewayServiceGetRequest, opts ...grpc.CallOption) (*GatewayServiceGetResponse, error) {
 	out := new(GatewayServiceGetResponse)
 	err := c.cc.Invoke(ctx, GatewayService_Get_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gatewayServiceClient) GetLastLocation(ctx context.Context, in *GatewayServiceGetLastLocationRequest, opts ...grpc.CallOption) (*GatewayServiceGetLastLocationResponse, error) {
+	out := new(GatewayServiceGetLastLocationResponse)
+	err := c.cc.Invoke(ctx, GatewayService_GetLastLocation_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -133,6 +144,7 @@ type GatewayServiceServer interface {
 	Claim(context.Context, *GatewayServiceClaimRequest) (*GatewayServiceClaimResponse, error)
 	Unclaim(context.Context, *GatewayServiceUnclaimRequest) (*GatewayServiceUnclaimResponse, error)
 	Get(context.Context, *GatewayServiceGetRequest) (*GatewayServiceGetResponse, error)
+	GetLastLocation(context.Context, *GatewayServiceGetLastLocationRequest) (*GatewayServiceGetLastLocationResponse, error)
 	Update(context.Context, *GatewayServiceUpdateRequest) (*GatewayServiceUpdateResponse, error)
 	Subscribe(*GatewayServiceSubscribeRequest, GatewayService_SubscribeServer) error
 	ScanWiFiAccessPoints(context.Context, *GatewayServiceScanWiFiAccessPointsRequest) (*GatewayServiceScanWiFiAccessPointsResponse, error)
@@ -151,6 +163,9 @@ func (UnimplementedGatewayServiceServer) Unclaim(context.Context, *GatewayServic
 }
 func (UnimplementedGatewayServiceServer) Get(context.Context, *GatewayServiceGetRequest) (*GatewayServiceGetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedGatewayServiceServer) GetLastLocation(context.Context, *GatewayServiceGetLastLocationRequest) (*GatewayServiceGetLastLocationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLastLocation not implemented")
 }
 func (UnimplementedGatewayServiceServer) Update(context.Context, *GatewayServiceUpdateRequest) (*GatewayServiceUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -224,6 +239,24 @@ func _GatewayService_Get_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServiceServer).Get(ctx, req.(*GatewayServiceGetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GatewayService_GetLastLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GatewayServiceGetLastLocationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GatewayServiceServer).GetLastLocation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GatewayService_GetLastLocation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GatewayServiceServer).GetLastLocation(ctx, req.(*GatewayServiceGetLastLocationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -303,6 +336,10 @@ var GatewayService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _GatewayService_Get_Handler,
+		},
+		{
+			MethodName: "GetLastLocation",
+			Handler:    _GatewayService_GetLastLocation_Handler,
 		},
 		{
 			MethodName: "Update",
